@@ -38,18 +38,32 @@
           <el-menu
             :default-active="$route.path"
             router
+            background-color="transparent"  
+            text-color="#303133"           
+            active-text-color="#ffffff"    
             class="menu"
           >
+            <el-menu-item index="/profile">
+              <el-icon><Setting /></el-icon>
+              <span class="menu-text">个人中心</span>
+            </el-menu-item>
+
             <el-menu-item index="/user">
               <el-icon><User /></el-icon>
               <span class="menu-text">员工管理</span>
             </el-menu-item>
 
-            <!-- 更多菜单项示例 -->
-            <!-- <el-menu-item index="/dept">
+            <el-menu-item index="/dept">
               <el-icon><OfficeBuilding /></el-icon>
               <span class="menu-text">部门管理</span>
-            </el-menu-item> -->
+            </el-menu-item>
+
+            <el-menu-item index="/permission">
+              <el-icon><Setting /></el-icon>
+              <span class="menu-text">菜单管理</span>
+            </el-menu-item>
+
+            <!-- 继续添加其他菜单 -->
           </el-menu>
         </el-aside>
 
@@ -65,18 +79,23 @@
 </template>
 
 <script setup lang="ts">
-import { User, ArrowDown, SwitchButton } from '@element-plus/icons-vue'
+import { User, ArrowDown, SwitchButton, OfficeBuilding, Connection, Setting } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
+import api from '../api'
 
 const router = useRouter()
 
-const handleLogout = () => {
+const handleLogout = () => {  
   ElMessageBox.confirm('确定要退出登录吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
+    // 可选：调用后端 logout（火力全开，但不等待响应）
+    api.post('/api/auth/logout').catch(() => {
+      // 忽略所有错误（网络断了也无所谓）
+    })
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     router.push('/login')
@@ -93,7 +112,7 @@ const handleLogout = () => {
   background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
 }
 
-/* 背景装饰圆形（与登录/注册一致） */
+/* 背景装饰圆形 */
 .bg-decoration {
   position: absolute;
   width: 800px;
@@ -157,22 +176,25 @@ const handleLogout = () => {
   background: rgba(255, 255, 255, 0.85);
   border-right: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
-  overflow-y: auto;
+  overflow: hidden; /* 防止滚动条影响布局 */
 }
 
 .menu {
   background: transparent;
   border-right: none;
-  height: calc(100vh - 60px);
+  height: 100%; /* 充满整个 aside */
+  padding: 20px 0;
 }
 
 .menu .el-menu-item {
   height: 56px;
   line-height: 56px;
   font-size: 15px;
-  margin: 8px 16px;
+  margin: 4px 16px;
   border-radius: 12px;
   transition: all 0.3s;
+  display: flex;
+  align-items: center;
 }
 
 .menu .el-menu-item:hover {
@@ -180,19 +202,21 @@ const handleLogout = () => {
 }
 
 .menu .el-menu-item.is-active {
-  background: linear-gradient(to right, #667eea, #764ba2);
+  background: linear-gradient(to right, #667eea, #764ba2) !important;
   color: #ffffff !important;
   box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .menu-text {
-  margin-left: 8px;
+  margin-left: 12px;
+  font-weight: 500;
 }
 
 /* Main 内容区 */
 .main {
   padding: 32px;
   overflow-y: auto;
+  background: transparent;
 }
 
 .content-wrapper {
@@ -202,6 +226,6 @@ const handleLogout = () => {
   border-radius: 20px;
   padding: 32px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 124px);
 }
 </style>
