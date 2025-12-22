@@ -6,6 +6,7 @@ import UserList from '@/views/user/index.vue'  // 员工管理页面
 import Dept from '@/views/dept/index.vue'       // 部门管理页面（你已经做好了）
 import Profile from '@/views/profile/index.vue' // 个人中心页面
 import Permission from '@/views/permission/index.vue' // 个人中心页面
+import Role from '@/views/role/index.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -47,7 +48,13 @@ const router = createRouter({
           path: 'permission',
           name: 'Permission',
           component: Permission,
-          meta: { title: '权限管理' }
+          meta: { title: '菜单管理' }
+        },
+        {
+          path: 'Role',
+          name: 'role',
+          component: Role,
+          meta: { title: '角色管理' }
         }
 
         // 以后加新页面都放这里

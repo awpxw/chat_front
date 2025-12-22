@@ -63,6 +63,11 @@
               <span class="menu-text">菜单管理</span>
             </el-menu-item>
 
+            <el-menu-item index="/role">
+              <el-icon><Setting /></el-icon>
+              <span class="menu-text">角色管理</span>
+            </el-menu-item>
+
             <!-- 继续添加其他菜单 -->
           </el-menu>
         </el-aside>
